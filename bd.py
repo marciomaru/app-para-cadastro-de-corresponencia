@@ -1,10 +1,15 @@
+import sqlite3
+'''
+Classe estática, faz conexão com o banco de dados,
+cria a tabela "item" e retorna a conexão para
+a manipulação dos dados.
+'''
+
 class Bd:
 
-    def __init__(self):
-        self.__lista = [('nadia', 20), ('nadia', 21), ('morango', 22)]
-
-    @property
-    def lista(self):
-        return self.__lista
-
-
+    @staticmethod
+    def conexao():
+        __conn = sqlite3.connect('dados.bd')
+        cursor = __conn.cursor()
+        cursor.execute('create table if not exists item (nome, cj)')
+        return __conn
