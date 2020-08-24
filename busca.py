@@ -3,13 +3,13 @@ from bd import Bd
 
 class Buscar:
 
-    def __init__(self, args=None):
+    def __init__(self, args=None, bd=None):
         self.__args = args
-        self.__conexao = Bd.conexao()
+        self.__conexao = bd.conexao()
         self.__cursor = self.__conexao.cursor()
 
     def buscar(self):
-        if self.__args == None:
+        if self.__args is None:
             self.buscar_tudo()
         elif isinstance(self.__args[0], str) and isinstance(self.__args[1], int):
             self.buscar_nome_e_conjunto()
