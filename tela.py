@@ -14,24 +14,37 @@ class tela:
             self.teste()
             self.caixa=Frame(janela)
             self.caixa.grid()
-            self.b=Button(janela, text='Abrir', command=self.new_jan)
-            self.b.grid()
-            self.l1=Label(janela, text='raiz!')
-            self.l1.grid()
 
-        def new_jan(self):
+            self.b_cadastro = Button(janela, text='Cadastrar itens')
+            self.b_cadastro['width'] = 20
+            self.b_cadastro['height'] = 10
+            self.b_cadastro.grid(row=0, column=0)
+
+            self.b_buscar = Button(janela, text='Procurar itens', command=self.__new_jan)
+            self.b_buscar['width'] = 20
+            self.b_buscar['height'] = 10
+            self.b_buscar.grid(row=0, column=1)
+
+
+        def __new_jan(self):
             self.jan = Toplevel()
 
+            self.l_nome = Label(self.jan, text='Nome ')
+            self.l_nome.grid(row=0, column=0)
+
             self.campo = Entry(self.jan, width=75)
-            self.campo.grid(row=0, column=0)
+            self.campo.grid(row=0, column=1)
+
+            self.l_cj = Label(self.jan, text='Cj ')
+            self.l_cj.grid(row=0, column=2)
 
             self.cbox = Combobox(self.jan)
-            self.cbox['values'] = ('', 72, 73, 74)
+            self.cbox['values'] = self.__preenche_cbox()
             self.cbox.current(0)
-            self.cbox.grid(row=0, column=1)
+            self.cbox.grid(row=0, column=3)
 
-            self.botao = Button(self.jan, text='Buscar', command=self.efetuar_busca)
-            self.botao.grid(row=0, column=2)
+            self.botao = Button(self.jan, text='Buscar', command=self.__efetuar_busca)
+            self.botao.grid(row=0, column=4)
 
             self.texto = scrolledtext.ScrolledText(self.jan, width=60, height=10)
             self.texto.grid(row=1, column=0, columnspan=3)
@@ -44,11 +57,29 @@ class tela:
         def fecha_jan(self):
             self.jan.destroy()
 
-        def efetuar_busca(self):
-            argumentos = (self.campo.get(), 74)
+        def __efetuar_busca(self):
+            argumentos = (self.campo.get(), self.__converte_resultado_do_cbox())
             buscar = Buscar(argumentos, Bd())
             resultado = buscar.buscar()
             self.mostra_resultado(resultado)
+
+        def __converte_resultado_do_cbox(self):
+            resultado_cbox = self.cbox.get()
+            try:
+                resultado_convertido = int(resultado_cbox)
+                return resultado_convertido
+            except:
+                return resultado_cbox
+
+        def __preenche_cbox(self):
+            numero_do_cj = 10
+            lista_de_cjs = ['']
+            while numero_do_cj <= 88:
+                for contagem in range(8):
+                    numero_do_cj += 1
+                    lista_de_cjs.append(numero_do_cj)
+                numero_do_cj += 2
+            return lista_de_cjs[:]
 
         def mostra_resultado(self, resultado):
             if not resultado:
@@ -76,6 +107,6 @@ class tela:
 
 tela(root)
 
-root.geometry('300x200')
+root.geometry('300x165')
 
 root.mainloop()

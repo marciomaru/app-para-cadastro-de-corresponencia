@@ -5,7 +5,6 @@ class Buscar:
 
     def __init__(self, args=None, bd=None):
         self.__args = args
-        print(self.__args)
         self.__conexao = bd.conexao()
         self.__cursor = self.__conexao.cursor()
         self.__resultado_da_busca = []
@@ -19,9 +18,7 @@ class Buscar:
             dados = {'nome': self.__args[0], 'cj': self.__args[1]}
             for row in self.__cursor.execute('select * from item where cj=:cj ', dados):
                 local_da_busca = row[0]
-                print(f'local: {local_da_busca}')
                 if dados['nome'] in local_da_busca:
-                    print(f'dados: {dados["nome"]}')
                     self.__resultado_da_busca.append(row[0])
             self.__conexao.close()
             return self.__resultado_da_busca
@@ -50,8 +47,6 @@ class Buscar:
             return self.__resultado_da_busca
         else:
             return self.__buscar_tudo()
-
-
 
     def __buscar_tudo(self):
         # vai buscar tudo, qualquer nome em qualquer conjunto.
