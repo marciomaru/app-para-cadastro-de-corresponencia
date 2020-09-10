@@ -20,13 +20,13 @@ class tela:
             self.b_cadastro['height'] = 10
             self.b_cadastro.grid(row=0, column=0)
 
-            self.b_buscar = Button(janela, text='Procurar itens', command=self.__new_jan)
+            self.b_buscar = Button(janela, text='Procurar itens', command=self.__tela_de_busca)
             self.b_buscar['width'] = 20
             self.b_buscar['height'] = 10
             self.b_buscar.grid(row=0, column=1)
 
 
-        def __new_jan(self):
+        def __tela_de_busca(self):
             self.jan = Toplevel()
 
             self.l_nome = Label(self.jan, text='Nome ')
@@ -47,6 +47,7 @@ class tela:
             self.botao.grid(row=0, column=4)
 
             self.texto = scrolledtext.ScrolledText(self.jan, width=60, height=10)
+            self.texto['state'] = 'disabled'
             self.texto.grid(row=1, column=0, columnspan=3)
 
             self.jan.geometry('800x200')
@@ -61,7 +62,7 @@ class tela:
             argumentos = (self.campo.get(), self.__converte_resultado_do_cbox())
             buscar = Buscar(argumentos, Bd())
             resultado = buscar.buscar()
-            self.mostra_resultado(resultado)
+            self.__mostra_resultado(resultado)
 
         def __converte_resultado_do_cbox(self):
             resultado_cbox = self.cbox.get()
@@ -81,7 +82,7 @@ class tela:
                 numero_do_cj += 2
             return lista_de_cjs[:]
 
-        def mostra_resultado(self, resultado):
+        def __mostra_resultado(self, resultado):
             if not resultado:
                 messagebox.showinfo(
                     'RESULTADO DA BUSCA', 'Não foi encontrado '
@@ -89,7 +90,9 @@ class tela:
                     )
             else:
                 for item in resultado:
+                    self.texto['state'] = 'normal'
                     self.texto.insert(INSERT, f'{item}\n')
+                    self.texto['state'] = 'disabled'
 
         def teste(self):
             con = Bd.conexao()
