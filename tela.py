@@ -5,8 +5,9 @@ from tkinter import *
 from tkinter import scrolledtext
 from tkinter import messagebox
 from tkinter.ttk import Combobox
+from tela_de_cadastro_de_itens import Tela_de_cadastro_de_itens
 
-root=Tk()
+root = Tk()
 
 class tela:
 
@@ -15,7 +16,8 @@ class tela:
             self.caixa=Frame(janela)
             self.caixa.grid()
 
-            self.b_cadastro = Button(janela, text='Cadastrar itens')
+            self.b_cadastro = Button(janela, text='Cadastrar itens',
+                                     command=self.__abrir_tela_cadastro_de_itens)
             self.b_cadastro['width'] = 20
             self.b_cadastro['height'] = 10
             self.b_cadastro.grid(row=0, column=0)
@@ -54,6 +56,9 @@ class tela:
             self.jan.transient(root)
             self.jan.focus_force()
             self.jan.grab_set()
+
+        def __abrir_tela_cadastro_de_itens(self):
+            tela_de_cadastro = Tela_de_cadastro_de_itens(root, self.__preenche_cbox())
 
         def fecha_jan(self):
             self.jan.destroy()
@@ -111,5 +116,6 @@ class tela:
 tela(root)
 
 root.geometry('300x165')
+root.title('Controle')
 
 root.mainloop()
