@@ -12,7 +12,7 @@ class Buscar:
     def __buscar_nome_e_conjunto(self):
         # buscar um nome em um conjunto.
         if (isinstance(self.__args[0], str) and self.__args[0] != '') and isinstance(self.__args[1], int):
-            dados = {'nome': self.__args[0], 'cj': self.__args[1]}
+            dados = {'nome': self.__args[0], 'cj': str(self.__args[1])}
             for row in self.__cursor.execute('select * from item where cj=:cj ', dados):
                 local_da_busca = row[1]
                 if dados['nome'] in local_da_busca:
@@ -38,7 +38,7 @@ class Buscar:
     def __buscar_por_conjunto(self):
         # buscar todos os nomes em um conjunto.
         if self.__args[1] != '':
-            for row in self.__cursor.execute('select * from item where cj=:cj', {'cj': self.__args[1]}):
+            for row in self.__cursor.execute('select * from item where cj=:cj', {'cj': str(self.__args[1])}):
                 self.__resultado_da_busca.append(f'{row[0]} --> {row[1]} --> {row[2]} --> {row[3]}')
             self.__conexao.close()
             return self.__resultado_da_busca
