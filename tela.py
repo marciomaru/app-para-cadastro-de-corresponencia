@@ -12,7 +12,7 @@ root = Tk()
 class tela:
 
         def __init__(self, janela):
-            self.teste()
+            # self.teste() # insere valores para teste no bd
             self.caixa=Frame(janela)
             self.caixa.grid()
 
@@ -49,6 +49,7 @@ class tela:
             self.botao.grid(row=0, column=4)
 
             self.texto = scrolledtext.ScrolledText(self.jan, width=60, height=10)
+            self.texto.insert(INSERT, 'COD --> NOME --> CJ --> DESCRIÇÃO\n')
             self.texto['state'] = 'disabled'
             self.texto.grid(row=1, column=0, columnspan=3)
 
@@ -106,9 +107,9 @@ class tela:
             joao = 'joao'
             n1 = 72
             n2 = 73
-            cursor.execute("insert into item values(?, ?)", (aria, n1))
-            cursor.execute("insert into item values(?, ?)", (aria, n1))
-            cursor.execute("insert into item values(?, ?)", (joao, n2))
+            cursor.execute("insert into item values(?, ?, ?, ?)", (None, aria, n1, 'algum texto'))
+            cursor.execute("insert into item values(?, ?, ?, ?)", (None, aria, n1, 'algum texto'))
+            cursor.execute("insert into item values(?, ?, ?, ?)", (None, joao, n2, 'algum texto'))
             con.commit()
             con.close()
 

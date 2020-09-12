@@ -1,6 +1,3 @@
-from bd import Bd
-
-
 class Buscar:
 
     def __init__(self, args=None, bd=None):
@@ -17,9 +14,9 @@ class Buscar:
         if (isinstance(self.__args[0], str) and self.__args[0] != '') and isinstance(self.__args[1], int):
             dados = {'nome': self.__args[0], 'cj': self.__args[1]}
             for row in self.__cursor.execute('select * from item where cj=:cj ', dados):
-                local_da_busca = row[0]
+                local_da_busca = row[1]
                 if dados['nome'] in local_da_busca:
-                    self.__resultado_da_busca.append(row[0])
+                    self.__resultado_da_busca.append(f'{row[0]} --> {row[1]} --> {row[2]} --> {row[3]}')
             self.__conexao.close()
             return self.__resultado_da_busca
         else:
@@ -30,9 +27,9 @@ class Buscar:
         if (self.__args[0] != '') and self.__args[1] == '':
             nome = self.__args[0]
             for row in self.__cursor.execute('select * from item'):
-                local_da_busca = row[0]
+                local_da_busca = row[1]
                 if nome in local_da_busca:
-                    self.__resultado_da_busca.append(row[0])
+                    self.__resultado_da_busca.append(f'{row[0]} --> {row[1]} --> {row[2]} --> {row[3]}')
             self.__conexao.close()
             return self.__resultado_da_busca
         else:
@@ -42,7 +39,7 @@ class Buscar:
         # buscar todos os nomes em um conjunto.
         if self.__args[1] != '':
             for row in self.__cursor.execute('select * from item where cj=:cj', {'cj': self.__args[1]}):
-                self.__resultado_da_busca.append(row[0])
+                self.__resultado_da_busca.append(f'{row[0]} --> {row[1]} --> {row[2]} --> {row[3]}')
             self.__conexao.close()
             return self.__resultado_da_busca
         else:
@@ -51,7 +48,7 @@ class Buscar:
     def __buscar_tudo(self):
         # vai buscar tudo, qualquer nome em qualquer conjunto.
         for row in self.__cursor.execute('select * from item'):
-            self.__resultado_da_busca.append(row[0])
+            self.__resultado_da_busca.append(f'{row[0]} --> {row[1]} --> {row[2]} --> {row[3]}')
         return self.__resultado_da_busca
 
 
