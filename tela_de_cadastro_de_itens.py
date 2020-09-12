@@ -48,7 +48,3 @@ class Tela_de_cadastro_de_itens:
         item = Item(None, self.campo.get(), self.cbox.get(), self.campo_desc.get())
         obj_para_cadastar_item = Cadastrar_item(item, Bd())
         obj_para_cadastar_item.cadastrar_item_no_bd()
-
-
-if __name__ == '__main__':
-    tela = Tela_de_cadastro_de_itens()
