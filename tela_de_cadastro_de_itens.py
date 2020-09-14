@@ -33,14 +33,15 @@ class Tela_de_cadastro_de_itens:
 
         self.__campo_desc = Entry(self.__jan, width=75)
         self.__campo_desc.grid(row=1, column=1)
+        self.__campo.focus()
 
         self.__botao_cadastrar = Button(self.__jan, text='Cadastrar', command=self.__cadastrar_item)
-        self.__botao_cadastrar.grid(row=2, column=0, columnspan=3, pady=10 )
+        self.__botao_cadastrar.grid(row=2, column=0, columnspan=3, pady=10)
 
-        self.__botao_limpar = Button(self.__jan, text='Limpar')
+        self.__botao_limpar = Button(self.__jan, text='Limpar', command=self.__limpar_campos)
         self.__botao_limpar.grid(row=2, column=1, columnspan=3, pady=10)
 
-        self.__jan.geometry('750x200')
+        self.__jan.geometry('%dx%d+%d+%d' % (750, 200, 300, 200))
         self.__jan.transient(self.__root)
         self.__jan.focus_force()
         self.__jan.grab_set()
@@ -77,4 +78,10 @@ class Tela_de_cadastro_de_itens:
             item = Item(None, self.__campo.get(), self.__cbox.get(), self.__campo_desc.get())
             obj_para_cadastar_item = Cadastrar_item(item, Bd())
             obj_para_cadastar_item.cadastrar_item_no_bd()
+            self.__limpar_campos()
 
+    def __limpar_campos(self):
+        self.__campo.delete(0, END)
+        self.__campo_desc.delete(0, END)
+        self.__cbox.delete(0, END)
+        self.__campo.focus()

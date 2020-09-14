@@ -19,6 +19,7 @@ class Tela_de_busca_de_itens:
 
         self.campo = Entry(self.jan, width=75)
         self.campo.grid(row=0, column=1)
+        self.campo.focus()
 
         self.l_cj = Label(self.jan, text='Cj ')
         self.l_cj.grid(row=0, column=2)
@@ -36,12 +37,13 @@ class Tela_de_busca_de_itens:
         self.texto['state'] = 'disabled'
         self.texto.grid(row=1, column=0, columnspan=3)
 
-        self.jan.geometry('800x200')
+        self.jan.geometry('%dx%d+%d+%d' % (800, 200, 300, 200))
         self.jan.transient(root)
         self.jan.focus_force()
         self.jan.grab_set()
 
     def __buscar_itens(self):
+        self.__limpar_resultado_da_busca()
         argumentos = (self.campo.get(), self.__converte_resultado_do_cbox())
         buscar = Buscar(argumentos, Bd())
         resultado = buscar.buscar()
@@ -66,3 +68,10 @@ class Tela_de_busca_de_itens:
                 self.texto['state'] = 'normal'
                 self.texto.insert(INSERT, f'{item}\n')
                 self.texto['state'] = 'disabled'
+
+    def __limpar_resultado_da_busca(self):
+        self.texto['state'] = 'normal'
+        self.texto.delete(1.0, END)
+        self.texto.insert(INSERT, 'COD --> NOME --> CJ --> DESCRIÇÃO\n')
+        self.texto['state'] = 'disabled'
+        self.campo.focus()

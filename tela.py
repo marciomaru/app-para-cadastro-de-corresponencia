@@ -6,7 +6,6 @@ from tela_de_busca_de_itens import Tela_de_busca_de_itens
 
 root = Tk()
 
-
 class tela:
 
         def __init__(self, janela):
@@ -31,9 +30,6 @@ class tela:
         def __abrir_tela_busca_de_itens(self):
             tela_de_busca = Tela_de_busca_de_itens(root, self.__preenche_cbox())
 
-        def fecha_jan(self):
-            self.jan.destroy()
-
         def __preenche_cbox(self):
             numero_do_cj = 10
             lista_de_cjs = ['']
@@ -47,7 +43,7 @@ class tela:
 
 tela(root)
 
-root.geometry('300x165')
+root.geometry('%dx%d+%d+%d' % (300, 165, 300, 200))
 root.title('Controle')
 
 root.mainloop()
