@@ -25,20 +25,12 @@ class tela:
             self.__b_buscar.grid(row=0, column=1)
 
         def __abrir_tela_cadastro_de_itens(self):
-            tela_de_cadastro = Tela_de_cadastro_de_itens(root, self.__preenche_cbox())
+            tela_de_cadastro = Tela_de_cadastro_de_itens(root)
 
         def __abrir_tela_busca_de_itens(self):
-            tela_de_busca = Tela_de_busca_de_itens(root, self.__preenche_cbox())
+            tela_de_busca = Tela_de_busca_de_itens(root)
 
-        def __preenche_cbox(self):
-            numero_do_cj = 10
-            lista_de_cjs = ['']
-            while numero_do_cj <= 88:
-                for contagem in range(8):
-                    numero_do_cj += 1
-                    lista_de_cjs.append(numero_do_cj)
-                numero_do_cj += 2
-            return lista_de_cjs[:]
+
 
 
 tela(root)
