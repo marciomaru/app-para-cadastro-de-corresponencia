@@ -6,8 +6,13 @@ class Buscar:
         self.__cursor = self.__conexao.cursor()
         self.__resultado_da_busca = []
 
+
+
     def buscar(self):
-        return self.__buscar_nome_e_conjunto()
+        if isinstance(self.__args, tuple):
+           return self.__buscar_nome_e_conjunto()
+        else:
+           return self.__buscar_pelo_codigo()
 
     def __buscar_nome_e_conjunto(self):
         # buscar um nome em um conjunto.
@@ -17,7 +22,7 @@ class Buscar:
                 local_da_busca = row[1]
                 if dados['nome'] in local_da_busca:
                     self.__resultado_da_busca.append(f'{row[0]} --> {row[1]} --> {row[2]} --> {row[3]}')
-            self.__conexao.close()
+            print(f'1')
             return self.__resultado_da_busca
         else:
             return self.__buscar_por_nome()
@@ -49,7 +54,19 @@ class Buscar:
         # vai buscar tudo, qualquer nome em qualquer conjunto.
         for row in self.__cursor.execute('select * from item'):
             self.__resultado_da_busca.append(f'{row[0]} --> {row[1]} --> {row[2]} --> {row[3]}')
+        self.__conexao.close()
         return self.__resultado_da_busca
+
+    def __buscar_pelo_codigo(self):
+        cod = self.__args
+        row = self.__cursor.execute('select * from item where id=:cod', {'cod': cod})
+        if row is not None:
+            dados_do_item = row.fetchone()
+            self.__conexao.close()
+            return dados_do_item
+        else:
+            return None
+
 
 
 if __name__ == '__main__':

@@ -5,6 +5,7 @@ from tkinter import messagebox
 from tkinter import *
 from tkinter.ttk import Combobox
 from preenche_combobox import preenche_cbox
+from tratamento_de_dados import verificar_campos_preenchidos
 
 
 class Tela_de_cadastro_de_itens:
@@ -47,35 +48,14 @@ class Tela_de_cadastro_de_itens:
         self.__jan.focus_force()
         self.__jan.grab_set()
 
-    def __verificar_campos_preenchidos(self):
-        if self.__campo.get() != '' and (self.__campo_desc.get() != ''):
-            return self.__verificar_valor_no_cbox()
-        else:
-            messagebox.showinfo(
-                'ERRO AO CADASTRAR ITEM',
-                'Preencha os campos "Nome" e "Descrição"'
-            )
-
-    def __verificar_valor_no_cbox(self):
-        try:
-            valor_cbox = int(self.__cbox.get())
-            if valor_cbox in self.__itens_cbox:
-                return True
-            else:
-                messagebox.showinfo(
-                    'ERRO AO CADASTRAR ITEM',
-                    'Valor no campo "cj" está incorreto'
-                )
-                return False
-        except:
-            messagebox.showinfo(
-                'ERRO AO CADASTRAR ITEM',
-                'Valor no campo "cj" está incorreto'
-            )
-            return False
-
     def __cadastrar_item(self):
-        if self.__verificar_campos_preenchidos():
+        if verificar_campos_preenchidos(
+                self.__campo.get(),
+                self.__campo_desc.get(),
+                self.__cbox.get(),
+                self.__itens_cbox,
+        ):
+            print(f'verificar campo cbox {self.__cbox.get()}')
             item = Item(None, self.__campo.get(), self.__cbox.get(), self.__campo_desc.get())
             obj_para_cadastar_item = Cadastrar_item(item, Bd())
             obj_para_cadastar_item.cadastrar_item_no_bd()

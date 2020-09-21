@@ -7,6 +7,7 @@ from tkinter import scrolledtext
 from tkinter.ttk import Combobox
 from tela_de_alteracao_de_dados import Tela_de_alteracao_dados
 from preenche_combobox import preenche_cbox
+from tratamento_de_dados import converte_resultado_do_cbox, limpar_resultado_da_busca
 
 
 class Tela_de_busca_de_itens:
@@ -63,22 +64,35 @@ class Tela_de_busca_de_itens:
         self.jan.grab_set()
 
     def __buscar_itens(self):
-        self.__limpar_resultado_da_busca()
-        argumentos = (self.campo.get(), self.__converte_resultado_do_cbox())
+        limpar_resultado_da_busca(self.texto, self.campo)
+        argumentos = (self.campo.get(), converte_resultado_do_cbox(self.cbox.get()))
+        print(f'mostrando argumentos: {argumentos}')
         buscar = Buscar(argumentos, Bd())
         resultado = buscar.buscar()
+        print(f'mostrando resultado: {resultado}')
         self.__mostra_resultado(resultado)
 
-    def __alterar_dados_dos_itens(self):
-        tela_de_alteracao = Tela_de_alteracao_dados(self.__root, self.campo_cod.get())
+    def __buscar_item_para_alteracao(self):
+        buscar = Buscar(self.campo_cod.get(), Bd())
+        dados_do_item = buscar.buscar()
+        if dados_do_item:
+            item = Item(
+                dados_do_item[0],
+                dados_do_item[1],
+                dados_do_item[2],
+                dados_do_item[3]
+            )
+            return item
+        elif dados_do_item is None:
+            messagebox.showinfo('ERRO AO ALTERAR ITEM', 'Código inválido!')
+            return None
 
-    def __converte_resultado_do_cbox(self):
-        resultado_cbox = self.cbox.get()
-        try:
-            resultado_convertido = int(resultado_cbox)
-            return resultado_convertido
-        except:
-            return resultado_cbox
+    def __alterar_dados_dos_itens(self):
+        item = self.__buscar_item_para_alteracao()
+        if item is not None:
+            tela_de_alteracao = Tela_de_alteracao_dados(self.__root, item)
+            print(f'atriduto de teste: {tela_de_alteracao.teste}')
+
 
     def __mostra_resultado(self, resultado):
         if not resultado:
@@ -92,9 +106,9 @@ class Tela_de_busca_de_itens:
                 self.texto.insert(INSERT, f'{item}\n')
                 self.texto['state'] = 'disabled'
 
-    def __limpar_resultado_da_busca(self):
-        self.texto['state'] = 'normal'
-        self.texto.delete(1.0, END)
-        self.texto.insert(INSERT, 'COD --> NOME --> CJ --> DESCRIÇÃO\n')
-        self.texto['state'] = 'disabled'
-        self.campo.focus()
+    # def __limpar_resultado_da_busca(self):
+    #     self.texto['state'] = 'normal'
+    #     self.texto.delete(1.0, END)
+    #     self.texto.insert(INSERT, 'COD --> NOME --> CJ --> DESCRIÇÃO\n')
+    #     self.texto['state'] = 'disabled'
+    #     self.campo.focus()
