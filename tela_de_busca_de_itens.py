@@ -8,6 +8,7 @@ from tkinter.ttk import Combobox
 from tela_de_alteracao_de_dados import Tela_de_alteracao_dados
 from preenche_combobox import preenche_cbox
 from tratamento_de_dados import converte_resultado_do_cbox, limpar_resultado_da_busca
+from excluir_item import Excluir_item
 
 
 class Tela_de_busca_de_itens:
@@ -55,7 +56,7 @@ class Tela_de_busca_de_itens:
         self.botao_alterar = Button(self.jan, text='Alterar', command=self.__alterar_dados_dos_itens)
         self.botao_alterar.grid(row=6, column=0, padx=5, pady=10)
 
-        self.botao_excluir = Button(self.jan, text='Excluir')
+        self.botao_excluir = Button(self.jan, text='Excluir', command=self.__excluir_item)
         self.botao_excluir.grid(row=6, column=1, padx=5, pady=10, sticky=W)
 
         self.jan.geometry('%dx%d+%d+%d' % (800, 300, 300, 200))
@@ -91,7 +92,24 @@ class Tela_de_busca_de_itens:
         item = self.__buscar_item_para_alteracao()
         if item is not None:
             tela_de_alteracao = Tela_de_alteracao_dados(self.__root, item)
-            print(f'atriduto de teste: {tela_de_alteracao.teste}')
+            limpar_resultado_da_busca(self.texto, self.campo)
+
+    def __excluir_item(self):
+        buscar = Buscar(self.campo_cod.get(), Bd())
+        dados_do_item = buscar.buscar()
+        if dados_do_item:
+            resposta = messagebox.askquestion(
+                'AVISO DE EXCLUSÃO',
+                f'Excluir {dados_do_item[3]} '
+                f'do cj. {dados_do_item[2]} '
+                f'em nome de {dados_do_item[1]} ?')
+            if resposta == 'yes':
+                obj_para_excluir_item = Excluir_item(self.campo_cod.get(), Bd())
+                limpar_resultado_da_busca(self.texto, self.campo)
+                obj_para_excluir_item.excluir()
+        elif dados_do_item is None:
+            messagebox.showinfo('ERRO AO EXCLUIR ITEM', 'Código inexistente!')
+
 
 
     def __mostra_resultado(self, resultado):

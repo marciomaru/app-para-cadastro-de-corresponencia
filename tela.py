@@ -19,7 +19,11 @@ class tela:
             self.__b_cadastro['height'] = 10
             self.__b_cadastro.grid(row=0, column=0)
 
-            self.__b_buscar = Button(janela, text='Procurar itens', command=self.__abrir_tela_busca_de_itens)
+            self.__b_buscar = Button(janela,
+                                     text='Procurar,\n'
+                                          ' Alterar e\n'
+                                          'Excluir itens',
+                                     command=self.__abrir_tela_busca_de_itens)
             self.__b_buscar['width'] = 20
             self.__b_buscar['height'] = 10
             self.__b_buscar.grid(row=0, column=1)
